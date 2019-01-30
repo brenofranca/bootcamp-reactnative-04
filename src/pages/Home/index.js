@@ -11,7 +11,7 @@ import {
   View,
   StatusBar,
   TouchableOpacity,
-  SafeAreaView
+  SafeAreaView,
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -23,18 +23,18 @@ import styles from './styles';
 class Home extends Component {
   static propTypes = {
     navigation: PropTypes.shape({
-      navigate: PropTypes.func
+      navigate: PropTypes.func,
     }).isRequired,
     addFavoriteRequest: PropTypes.func.isRequired,
-    favoritesCount: PropTypes.number.isRequired
+    favoritesCount: PropTypes.number.isRequired,
   };
 
   static navigationOptions = {
-    header: null
+    header: null,
   };
 
   state = {
-    repoNameInput: 'facebook/react'
+    repoNameInput: 'facebook/react',
   };
 
   componentDidMount() {}
@@ -94,8 +94,10 @@ class Home extends Component {
             activeOpacity={0.6}
           >
             <Text style={styles.footerLink}>
-              meus favoritos ({favoritesCount})
-            </Text>
+              meus favoritos (
+{favoritesCount}
+)
+</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -104,13 +106,12 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => ({
-  favoritesCount: state.favorites.length
+  favoritesCount: state.favorites.length,
 });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(FavoritesActions, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators(FavoritesActions, dispatch);
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Home);
