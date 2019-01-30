@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 // import api from '~/services/api';
 
@@ -11,19 +11,31 @@ import {
   View,
   StatusBar,
   TouchableOpacity,
-  SafeAreaView,
+  SafeAreaView
 } from 'react-native';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as FavoritesActions from '~/store/actions/favorites';
 
 import styles from './styles';
 
 class Home extends Component {
-  static propTypes = {};
-
-  static navigationOptions = {
-    header: null,
+  static propTypes = {
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func
+    }).isRequired,
+    addFavoriteRequest: PropTypes.func.isRequired,
+    favoritesCount: PropTypes.number.isRequired
   };
 
-  state = {};
+  static navigationOptions = {
+    header: null
+  };
+
+  state = {
+    repoNameInput: 'facebook/react'
+  };
 
   componentDidMount() {}
 
@@ -33,7 +45,17 @@ class Home extends Component {
     navigation.navigate('Favorites');
   };
 
+  addRepository = () => {
+    const { repoNameInput } = this.state;
+    const { addFavoriteRequest } = this.props;
+
+    addFavoriteRequest(repoNameInput);
+  };
+
   render() {
+    const { repoNameInput } = this.state;
+    const { favoritesCount } = this.props;
+
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="light-content" />
@@ -51,11 +73,14 @@ class Home extends Component {
               autoCapitalize="none"
               autoCorrect={false}
               placeholder="usuário/repositório"
+              underlineColorAndroid="transparent"
+              value={repoNameInput}
+              onChangeText={text => this.setState({ repoNameInput: text })}
             />
 
             <TouchableOpacity
               style={styles.button}
-              onPress={() => {}}
+              onPress={this.addRepository}
               activeOpacity={0.6}
             >
               <Text style={styles.buttonText}>Adicionar aos favoritos</Text>
@@ -68,7 +93,9 @@ class Home extends Component {
             onPress={this.navigateToFavorites}
             activeOpacity={0.6}
           >
-            <Text style={styles.footerLink}>meus favoritos (0)</Text>
+            <Text style={styles.footerLink}>
+              meus favoritos ({favoritesCount})
+            </Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -76,4 +103,14 @@ class Home extends Component {
   }
 }
 
-export default Home;
+const mapStateToProps = state => ({
+  favoritesCount: state.favorites.length
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(FavoritesActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);
