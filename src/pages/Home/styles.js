@@ -35,6 +35,12 @@ const styles = StyleSheet.create({
     marginTop: metrics.baseMargin / 2,
     textAlign: 'center',
   },
+  error: {
+    alignSelf: 'center',
+    color: colors.danger,
+    fontWeight: 'bold',
+    marginBottom: metrics.baseMargin,
+  },
   footer: {
     paddingBottom: metrics.basePadding,
   },
@@ -52,6 +58,9 @@ const styles = StyleSheet.create({
     borderRadius: metrics.baseRadius,
     height: 50,
     paddingHorizontal: metrics.basePadding,
+  },
+  loading: {
+    color: colors.whiteTransparent,
   },
   title: {
     color: colors.white,

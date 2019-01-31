@@ -15,12 +15,14 @@ class Favorites extends Component {
   };
 
   static propTypes = {
-    favorites: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        full_name: PropTypes.string.isRequired,
-      }),
-    ).isRequired,
+    favorites: PropTypes.shape({
+      data: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          full_name: PropTypes.string.isRequired,
+        }).isRequired,
+      ).isRequired,
+    }).isRequired,
   };
 
   renderListItem = item => (
@@ -39,7 +41,7 @@ class Favorites extends Component {
     return (
       <FlatList
         style={styles.list}
-        data={favorites}
+        data={favorites.data}
         keyExtractor={item => String(item.id)}
         renderItem={({ item }) => this.renderListItem(item)}
       />
@@ -51,7 +53,7 @@ class Favorites extends Component {
 
     return (
       <View style={styles.container}>
-        {!favorites.length ? (
+        {!favorites.data.length ? (
           <View style={styles.emptyContainer}>
             <Text style={styles.empty}>Nenhum favorito adicionado</Text>
           </View>

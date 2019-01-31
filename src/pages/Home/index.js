@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import Icon from 'react-native-vector-icons/FontAwesome';
-// import api from '~/services/api';
-
-// import { colors } from '~/styles';
 
 import {
   Text,
@@ -12,6 +8,7 @@ import {
   StatusBar,
   TouchableOpacity,
   SafeAreaView,
+  ActivityIndicator
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -23,18 +20,22 @@ import styles from './styles';
 class Home extends Component {
   static propTypes = {
     navigation: PropTypes.shape({
-      navigate: PropTypes.func,
+      navigate: PropTypes.func
     }).isRequired,
     addFavoriteRequest: PropTypes.func.isRequired,
-    favoritesCount: PropTypes.number.isRequired,
+    favorites: PropTypes.shape({
+      data: PropTypes.arrayOf(PropTypes.shape),
+      loading: PropTypes.bool,
+      errorOnAdd: PropTypes.oneOfType([null, PropTypes.string])
+    }).isRequired
   };
 
   static navigationOptions = {
-    header: null,
+    header: null
   };
 
   state = {
-    repoNameInput: '',
+    repoNameInput: ''
   };
 
   componentDidMount() {}
@@ -49,6 +50,8 @@ class Home extends Component {
     const { repoNameInput } = this.state;
     const { addFavoriteRequest } = this.props;
 
+    if (!repoNameInput) return;
+
     addFavoriteRequest(repoNameInput);
 
     this.setState({ repoNameInput: '' });
@@ -56,7 +59,7 @@ class Home extends Component {
 
   render() {
     const { repoNameInput } = this.state;
-    const { favoritesCount } = this.props;
+    const { favorites } = this.props;
 
     return (
       <SafeAreaView style={styles.container}>
@@ -70,6 +73,10 @@ class Home extends Component {
           </Text>
 
           <View style={styles.form}>
+            {!!favorites.errorOnAdd && (
+              <Text style={styles.error}>{favorites.errorOnAdd}</Text>
+            )}
+
             <TextInput
               style={styles.input}
               autoCapitalize="none"
@@ -85,7 +92,11 @@ class Home extends Component {
               onPress={this.addRepository}
               activeOpacity={0.6}
             >
-              <Text style={styles.buttonText}>Adicionar aos favoritos</Text>
+              {favorites.loading ? (
+                <ActivityIndicator size="small" style={styles.loading} />
+              ) : (
+                <Text style={styles.buttonText}>Adicionar aos favoritos</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -96,10 +107,8 @@ class Home extends Component {
             activeOpacity={0.6}
           >
             <Text style={styles.footerLink}>
-              meus favoritos (
-{favoritesCount}
-)
-</Text>
+              meus favoritos ({favorites.data.length})
+            </Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -108,12 +117,13 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => ({
-  favoritesCount: state.favorites.length,
+  favorites: state.favorites
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators(FavoritesActions, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(FavoritesActions, dispatch);
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(Home);
