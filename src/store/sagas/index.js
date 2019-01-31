@@ -1,10 +1,10 @@
 import { all, takeLatest } from 'redux-saga/effects';
 
-import { addRepository, updateRepository } from './repositories';
+import { addFavoriteRequest } from './favorites';
+import { Types as FavoritesTypes } from '~/store/ducks/favorites';
 
 export default function* rootSaga() {
-  yield all([
-    takeLatest('ADD_REPOSITORY_REQUEST', addRepository),
-    takeLatest('UPDATE_REPOSITORY_REQUEST', updateRepository),
+  return yield all([
+    takeLatest(FavoritesTypes.ADD_FAVORITE_REQUEST, addFavoriteRequest),
   ]);
 }

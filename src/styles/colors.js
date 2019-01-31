@@ -9,13 +9,13 @@ export default {
   darker: '#333',
   black: '#000',
 
-  primary: '#6550B7',
-  primaryDark: Color('#6550B7').darken(0.1),
+  primary: '#8f7dd8',
+  primaryDark: Color('#8f7dd8').darken(0.1),
   secundary: '#6ADC00',
   success: '#9DCA83',
   danger: '#E37A7A',
 
   transparent: 'transparent',
   darkerTransparent: 'rgba(0, 0, 0, 0.6)',
-  whiteTransparent: 'rgba(255, 255, 255, 0.3)',
+  whiteTransparent: 'rgba(255, 255, 255, 0.3)'
 };
