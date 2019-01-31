@@ -34,7 +34,7 @@ class Home extends Component {
   };
 
   state = {
-    repoNameInput: 'facebook/react',
+    repoNameInput: '',
   };
 
   componentDidMount() {}
@@ -50,6 +50,8 @@ class Home extends Component {
     const { addFavoriteRequest } = this.props;
 
     addFavoriteRequest(repoNameInput);
+
+    this.setState({ repoNameInput: '' });
   };
 
   render() {
