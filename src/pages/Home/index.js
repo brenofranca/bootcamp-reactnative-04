@@ -8,34 +8,34 @@ import {
   StatusBar,
   TouchableOpacity,
   SafeAreaView,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as FavoritesActions from '~/store/actions/favorites';
+import { Creators as FavoritesCreators } from '~/store/ducks/favorites';
 
 import styles from './styles';
 
 class Home extends Component {
   static propTypes = {
     navigation: PropTypes.shape({
-      navigate: PropTypes.func
+      navigate: PropTypes.func,
     }).isRequired,
     addFavoriteRequest: PropTypes.func.isRequired,
     favorites: PropTypes.shape({
       data: PropTypes.arrayOf(PropTypes.shape),
       loading: PropTypes.bool,
-      errorOnAdd: PropTypes.oneOfType([null, PropTypes.string])
-    }).isRequired
+      errorOnAdd: PropTypes.oneOfType([null, PropTypes.string]),
+    }).isRequired,
   };
 
   static navigationOptions = {
-    header: null
+    header: null,
   };
 
   state = {
-    repoNameInput: ''
+    repoNameInput: '',
   };
 
   componentDidMount() {}
@@ -107,8 +107,10 @@ class Home extends Component {
             activeOpacity={0.6}
           >
             <Text style={styles.footerLink}>
-              meus favoritos ({favorites.data.length})
-            </Text>
+              meus favoritos (
+{favorites.data.length}
+)
+</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -117,13 +119,12 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => ({
-  favorites: state.favorites
+  favorites: state.favorites,
 });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(FavoritesActions, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators(FavoritesCreators, dispatch);
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Home);

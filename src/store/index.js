@@ -1,9 +1,8 @@
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import Reactotron from '~/config/ReactotronConfig';
 
 import sagas from './sagas';
-import reducers from './reducers';
+import reducers from './ducks';
 
 const sagaMonitor = __DEV__ ? null : null;
 const sagaMiddleware = createSagaMiddleware({ sagaMonitor });
